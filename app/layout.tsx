@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Pixelify_Sans, Ubuntu } from "next/font/google";
+import { Ubuntu, Jersey_10 } from "next/font/google";
 import "./globals.css";
-import Provider from "./provider";
 
-const gameFont = Pixelify_Sans({
+const gameFont = Jersey_10({
   subsets: ["latin"],
   variable: "--font-game",
+  weight: ["400"],
 });
 
 const ubuntu = Ubuntu({
@@ -25,16 +25,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="dark">
-      <body className={` ${gameFont.variable} ${ubuntu.variable}`}>
-        <Provider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </Provider>
+    <html lang="en" className="dark" suppressHydrationWarning>
+      <body className={`${gameFont.variable} ${ubuntu.variable}`}>
+        {children}
       </body>
     </html>
   );
