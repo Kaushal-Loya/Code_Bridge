@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Ubuntu, Jersey_10 } from "next/font/google";
 import "./globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const gameFont = Jersey_10({
   subsets: ["latin"],
@@ -25,10 +26,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
-      <body className={`${gameFont.variable} ${ubuntu.variable}`}>
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" className="dark" suppressHydrationWarning>
+        <body className={`${gameFont.variable} ${ubuntu.variable}`}>
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

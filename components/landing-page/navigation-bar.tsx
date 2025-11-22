@@ -11,86 +11,78 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, ChevronDown } from "lucide-react";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 
 const courses = [
-  {
-    id: 1,
-    name: "HTML",
-    desc: "Learn the fundamentals of HTML and build the structure of modern web pages.",
-    path: "/course/1/detail",
-  },
+  { id: 1, name: "HTML", desc: "Learn HTML basics.", path: "/course/1/detail" },
   {
     id: 2,
     name: "CSS",
-    desc: "Master CSS to style and design responsive, visually appealing web layouts.",
+    desc: "Master CSS layout & design.",
     path: "/course/2/detail",
   },
   {
     id: 3,
     name: "React",
-    desc: "Build dynamic and interactive web applications using the React JavaScript library.",
+    desc: "Build dynamic React apps.",
     path: "/course/3/detail",
   },
   {
     id: 4,
     name: "React Advanced",
-    desc: "Deep dive into advanced React concepts including hooks, state management, performance optimization, and architectural patterns.",
+    desc: "Hooks, state, optimization.",
     path: "/course/4/detail",
   },
   {
     id: 5,
     name: "Python",
-    desc: "Learn Python programming from basics to intermediate level, covering logic building, functions, and real-world applications.",
+    desc: "Beginner Python to logic building.",
     path: "/course/5/detail",
   },
   {
     id: 6,
     name: "Python Advanced",
-    desc: "Master advanced Python concepts such as OOP, modules, APIs, data processing, and automation.",
+    desc: "APIs, OOP, automation.",
     path: "/course/6/detail",
   },
   {
     id: 7,
     name: "Generative AI",
-    desc: "Explore prompt engineering, LLMs, embeddings, image generation, and build GenAI-powered applications.",
+    desc: "LLMs, embeddings, prompts.",
     path: "/course/7/detail",
   },
   {
     id: 8,
     name: "Machine Learning",
-    desc: "Understand ML concepts, algorithms, data preprocessing, model training, evaluation, and deployment.",
+    desc: "Models, training, deployment.",
     path: "/course/8/detail",
   },
   {
     id: 9,
     name: "JavaScript",
-    desc: "Learn core JavaScript concepts, asynchronous programming, DOM manipulation, and modern ES6+ features.",
+    desc: "Async, DOM, ES6+.",
     path: "/course/9/detail",
   },
 ];
 
 const NavigationBar = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isCoursesOpen, setIsCoursesOpen] = useState(false);
+  const [openCourses, setOpenCourses] = useState(false);
 
   return (
     <div className="p-4 max-w-7xl flex justify-between items-center w-full mx-auto">
-      <div className="flex gap-2 items-center">
-        <h2 className="font-bold text-3xl font-game">CodeBridge</h2>
-      </div>
+      <h2 className="font-bold text-3xl font-game">CodeBridge</h2>
 
       <div className="hidden md:block">
         <NavigationMenu>
           <NavigationMenuList className="gap-10">
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="cursor-pointer">
-                Courses
-              </NavigationMenuTrigger>
+              <NavigationMenuTrigger>Courses</NavigationMenuTrigger>
               <NavigationMenuContent>
-                <ul className="grid md:grid-cols-2 gap-2 sm:w-[400px] md:w-[500px] lg:w-[600px]">
-                  {courses.map((course, index) => (
-                    <Link key={index} href={course.path}>
+                <ul className="grid md:grid-cols-2 gap-2 sm:w-[400px] md:w-[500px] lg:w-[600px] p-2">
+                  {courses.map((course) => (
+                    <Link key={course.id} href={course.path}>
                       <div className="p-2 hover:bg-accent rounded-xl cursor-pointer">
                         <h2 className="font-medium">{course.name}</h2>
                         <p className="text-sm text-gray-500">{course.desc}</p>
@@ -101,119 +93,143 @@ const NavigationBar = () => {
               </NavigationMenuContent>
             </NavigationMenuItem>
 
-            <NavigationMenuItem>
-              <NavigationMenuLink>
-                <Link href={"/projects"}>Projects</Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
-              <NavigationMenuLink>
-                <Link href={"/pricing"}>Pricing</Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
-              <NavigationMenuLink>
-                <Link href={"/contact-us"}>Contact Us</Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
+            {[
+              { href: "/projects", label: "Projects" },
+              { href: "/pricing", label: "Pricing" },
+              { href: "/contact-us", label: "Contact Us" },
+            ].map((item) => (
+              <NavigationMenuItem key={item.href}>
+                <NavigationMenuLink asChild>
+                  <Link href={item.href}>{item.label}</Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            ))}
           </NavigationMenuList>
         </NavigationMenu>
       </div>
 
-      <Button
-        className="font-game text-2xl cursor-pointer hidden md:block"
-        variant={"pixel"}
-        size={"lg"}
-      >
-        Sign Up
-      </Button>
+      <SignedIn>
+        <div className="hidden md:flex items-center gap-3">
+          <Link href="/dashboard">
+            <Button
+              className="font-game text-lg px-4 py-1 cursor-pointer"
+              variant="pixel"
+            >
+              Dashboard
+            </Button>
+          </Link>
 
-      <button
-        className="md:hidden p-2"
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-      >
-        {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-      </button>
+          <UserButton
+            appearance={{
+              elements: {
+                userButtonOuter: "m-0 p-0",
+                userButtonBox: "m-0 p-0",
+              },
+            }}
+          />
+        </div>
+      </SignedIn>
 
-      {isMobileMenuOpen && (
-        <div className="fixed top-0 left-0 w-full h-screen bg-background z-50 md:hidden">
-          <div className="p-6 h-full flex flex-col">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="font-bold text-2xl font-game">CodeBridge</h2>
-              <button onClick={() => setIsMobileMenuOpen(false)}>
-                <X size={24} />
-              </button>
-            </div>
+      <SignedOut>
+        <div className="hidden md:flex items-center">
+          <SignInButton mode="modal">
+            <Button
+              variant="pixel"
+              className="font-game text-xl cursor-pointer"
+            >
+              Sign In
+            </Button>
+          </SignInButton>
+        </div>
+      </SignedOut>
 
-            <div className="flex-1 overflow-y-auto">
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <button
-                    className="flex items-center justify-between w-full py-3 text-left border-b"
-                    onClick={() => setIsCoursesOpen(!isCoursesOpen)}
-                  >
-                    <span className="text-lg font-medium">Courses</span>
-                    <ChevronDown
-                      className={`transition-transform duration-300 ${
-                        isCoursesOpen ? "rotate-180" : ""
-                      }`}
-                      size={20}
-                    />
-                  </button>
-                  
-                  {isCoursesOpen && (
-                    <div className="max-h-48 overflow-y-auto ml-2 border-l-2 border-gray-200 pl-4">
-                      <div className="space-y-2 py-2">
-                        {courses.map((course, index) => (
-                          <Link
-                            key={index}
-                            href={course.path}
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className="block py-2 px-3 hover:bg-accent rounded-lg transition-all duration-200 hover:translate-x-1"
-                          >
-                            <h3 className="font-medium">{course.name}</h3>
-                            <p className="text-sm text-gray-500 line-clamp-1">
-                              {course.desc}
-                            </p>
-                          </Link>
-                        ))}
-                      </div>
+      <Sheet>
+        <SheetTrigger className="md:hidden">
+          <Menu size={28} />
+        </SheetTrigger>
+
+        <SheetContent side="right" className="p-4 w-80">
+          <div className="mt-2 space-y-6">
+            <button
+              className="flex items-center justify-between w-full py-3 text-left border-b"
+              onClick={() => setOpenCourses(!openCourses)}
+            >
+              <span className="font-medium text-lg">Courses</span>
+              <ChevronDown
+                className={`transition-transform ${
+                  openCourses ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+
+            {openCourses && (
+              <div className="space-y-3 pl-2 max-h-56 overflow-y-auto">
+                {courses.map((course) => (
+                  <Link key={course.id} href={course.path} className="block">
+                    <div className="py-2 px-3 hover:bg-accent rounded-lg">
+                      <h3 className="font-medium">{course.name}</h3>
+                      <p className="text-sm text-gray-500 line-clamp-1">
+                        {course.desc}
+                      </p>
                     </div>
-                  )}
-                </div>
-
-                {[
-                  { href: "/projects", label: "Projects" },
-                  { href: "/pricing", label: "Pricing" },
-                  { href: "/contact-us", label: "Contact Us" }
-                ].map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block py-3 text-lg font-medium border-b hover:text-blue-600 transition-colors duration-200 hover:translate-x-2"
-                  >
-                    {item.label}
                   </Link>
                 ))}
               </div>
+            )}
+
+            <div className="space-y-4">
+              {[
+                { href: "/projects", label: "Projects" },
+                { href: "/pricing", label: "Pricing" },
+                { href: "/contact-us", label: "Contact Us" },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="block text-lg font-medium border-b pb-2 hover:text-blue-600"
+                >
+                  {item.label}
+                </Link>
+              ))}
             </div>
 
-            <div className="mb-[300px]">
-              <Button
-                className="font-game text-xl cursor-pointer w-full"
-                variant={"pixel"}
-                size={"lg"}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Sign Up
-              </Button>
+            <div className="pt-6 border-t">
+              <SignedIn>
+                <div className="flex items-center justify-between">
+                  <Link href="/dashboard">
+                    <Button
+                      className="font-game text-lg px-4 py-1"
+                      variant="pixel"
+                    >
+                      Dashboard
+                    </Button>
+                  </Link>
+
+                  <UserButton
+                    appearance={{
+                      elements: {
+                        userButtonOuter: "m-0 p-0",
+                        userButtonBox: "m-0 p-0",
+                      },
+                    }}
+                  />
+                </div>
+              </SignedIn>
+
+              <SignedOut>
+                <Link href="/sign-up">
+                  <Button
+                    className="font-game text-xl w-full mt-4"
+                    variant="pixel"
+                  >
+                    Sign Up
+                  </Button>
+                </Link>
+              </SignedOut>
             </div>
           </div>
-        </div>
-      )}
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };

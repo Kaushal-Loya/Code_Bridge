@@ -1,7 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
 
 const HeroSection = () => {
+  const router = useRouter();
+
   return (
     <div className="relative w-full h-screen overflow-hidden">
       <Image
@@ -32,6 +37,7 @@ const HeroSection = () => {
         </p>
 
         <Button
+        onClick={()=>router.push("/dashboard")}
           variant="pixel"
           className="font-game text-2xl sm:text-3xl mt-8 px-8 py-6 cursor-pointer"
         >
