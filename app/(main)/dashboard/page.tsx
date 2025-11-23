@@ -1,6 +1,7 @@
 import CoursesEnrolled from "@/components/dashboard-page/courses-enrolled";
 import ExploreMore from "@/components/dashboard-page/explore-more-buttons";
 import InviteFriend from "@/components/dashboard-page/invite-friend";
+import UserStatus from "@/components/dashboard-page/user-status";
 import WelcomeBanner from "@/components/dashboard-page/welcome-banner";
 
 const Dashboard = () => {
@@ -15,6 +16,7 @@ const Dashboard = () => {
 
         <div className="lg:block">
           <InviteFriend />
+          <UserStatus />
         </div>
       </div>
     </div>
