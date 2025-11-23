@@ -17,7 +17,7 @@ const HeroSection = () => {
         className="object-cover"
       />
 
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 translate-y-[-10%] sm:translate-y-[-5%] lg:translate-y-[-20%]">
         <h1 className="font-game font-bold text-5xl sm:text-6xl lg:text-7xl text-white drop-shadow-[0_5px_20px_rgba(0,0,0,0.7)]">
           Where Your
         </h1>
@@ -37,7 +37,7 @@ const HeroSection = () => {
         </p>
 
         <Button
-        onClick={()=>router.push("/dashboard")}
+          onClick={() => router.push("/dashboard")}
           variant="pixel"
           className="font-game text-2xl sm:text-3xl mt-8 px-8 py-6 cursor-pointer"
         >
