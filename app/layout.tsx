@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Ubuntu, Jersey_10 } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import Provider from "./provider";
 
 const gameFont = Jersey_10({
   subsets: ["latin"],
@@ -29,7 +30,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" className="dark" suppressHydrationWarning>
         <body className={`${gameFont.variable} ${ubuntu.variable}`}>
-          {children}
+          <Provider>{children}</Provider>
         </body>
       </html>
     </ClerkProvider>
