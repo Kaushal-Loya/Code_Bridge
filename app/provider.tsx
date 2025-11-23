@@ -1,3 +1,6 @@
+"use client"
+
+import NavigationBar from "@/components/landing-page/navigation-bar";
 import { UserDetailContext } from "@/context/user-detail-context";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
@@ -27,6 +30,9 @@ const Provider = ({
   return (
     <div>
       <UserDetailContext.Provider value={{ userDetail, setUserDetail }}>
+        <div className="flex flex-col items-center">
+          <NavigationBar />
+        </div>
         {children}
       </UserDetailContext.Provider>
     </div>
