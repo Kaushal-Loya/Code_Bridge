@@ -19,7 +19,7 @@ const CoursesEnrolled = () => {
         <div className="flex flex-col items-center gap-4 p-8 bg-zinc-900 border rounded-2xl text-center">
           <Image src="/books.png" alt="books" width={100} height={100} />
           <h3 className="font-game text-2xl">
-            You don&apos;t have any enrolled courses
+            You don&apos;t have any enrolled courses. Start by enrolling in one.
           </h3>
 
           <Button variant="pixel" size="lg" className="font-game text-xl cursor-pointer">
